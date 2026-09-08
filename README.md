@@ -33,10 +33,15 @@ Identity and links live in `src/data/site.ts`. Upwork, LinkedIn and GitHub are
 filled in; they also feed the `sameAs` field of the JSON-LD `Person` block. A
 profile with an empty `url` renders as plain muted text, never a dead link.
 
-Set the real domain in `astro.config.mjs` (`site:`) and in `public/robots.txt`
-if it is not `luizmedeiros.dev`. Those two values drive the canonical URL, the
-Open Graph image URL and the sitemap, so a stale domain shows up in the Upwork
-link preview.
+The canonical origin defaults to `https://luizmedeiros.dev` and can be
+overridden with a `SITE_URL` environment variable. It drives the canonical
+link, the absolute Open Graph image URL and the sitemap — so while the custom
+domain is not live, set `SITE_URL` to the `*.pages.dev` URL in the Cloudflare
+Pages environment variables, or the Upwork link preview points at a domain that
+does not resolve. Remove it once `luizmedeiros.dev` answers.
+
+`public/robots.txt` hardcodes the sitemap URL; update it when the domain
+changes.
 
 ## Editing content
 
