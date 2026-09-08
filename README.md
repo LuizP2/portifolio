@@ -36,9 +36,10 @@ profile with an empty `url` renders as plain muted text, never a dead link.
 The canonical origin defaults to `https://luizmedeiros.dev` and can be
 overridden with a `SITE_URL` environment variable. It drives the canonical
 link, the absolute Open Graph image URL and the sitemap — so while the custom
-domain is not live, set `SITE_URL` to the `*.pages.dev` URL in the Cloudflare
-Pages environment variables, or the Upwork link preview points at a domain that
-does not resolve. Remove it once `luizmedeiros.dev` answers.
+domain is not live, set `SITE_URL` to the deployed
+`*.workers.dev` URL in the Cloudflare build environment variables, or the
+Upwork link preview points at a domain that does not resolve. Remove it once
+`luizmedeiros.dev` answers.
 
 `public/robots.txt` hardcodes the sitemap URL; update it when the domain
 changes.
@@ -83,29 +84,35 @@ npm run preview
 # viewport, save as public/og.png, then delete dist/__og.html
 ```
 
-## Deploy — Cloudflare Pages
+## Deploy — Cloudflare Workers Builds
 
-The project is connected to this GitHub repo, so a push to `main` builds and
-deploys on its own, and every pull request gets a preview URL.
+The project is connected to this GitHub repo through Workers Builds, so a push
+to `main` builds and deploys on its own, and non-production branches get their
+own preview URLs.
 
-Build settings:
+Dashboard settings:
 
 | Setting | Value |
 |---|---|
-| Framework preset | Astro |
-| Build command | `npm run build` |
-| Build output directory | `dist` |
-| Root directory | *(empty)* |
+| Project name | `portifolio` — must match `name` in `wrangler.jsonc` |
+| Build command | `npm ci && npm run build` |
+| Deploy command | `npx wrangler deploy` |
 
-`.node-version` pins Node 22 for the build. `public/_headers` sets the security
-headers and immutable caching for fonts and hashed assets — Cloudflare Pages
-and Netlify both read it. Vercel detects Astro on its own; the same build
-command and output directory apply.
+`wrangler.jsonc` is what `wrangler deploy` reads. It serves `dist/` as static
+assets with no Worker script, and points 404s at the generated `dist/404.html`.
+`.node-version` pins Node 22 for the build. `public/_headers` is copied into
+`dist/` and is honoured by Workers static assets — it sets the security headers
+and immutable caching for fonts and hashed assets.
 
-There is deliberately no `wrangler.toml`: on a Git-connected Pages project its
-`name` must match the project name in the dashboard, and a mismatch fails the
-build. Add one only if you switch to direct uploads
-(`npx wrangler pages deploy dist`).
+Validate the config without deploying:
+
+```bash
+npm run build
+npx wrangler deploy --dry-run
+```
+
+Vercel and Netlify detect Astro on their own; build command `npm run build`,
+output directory `dist`.
 
 ## Constraints this site is held to
 

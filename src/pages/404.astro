@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+
+<Base title={`Page not found — ${site.name}`} description="This page does not exist." path="/404">
+  <section class="shell flex min-h-svh flex-col justify-center">
+    <div data-reveal>
+      <p class="label">Error 404</p>
+      <h1 class="display mt-6 text-text">Nothing here</h1>
+      <p class="prose-body mt-8 text-muted">
+        This page does not exist — it may have moved, or the link may be wrong.
+      </p>
+      <a
+        href="/"
+        class="label mt-10 inline-block text-signal transition-opacity duration-300 hover:opacity-70"
+      >
+        Back to home →
+      </a>
+    </div>
+  </section>
+</Base>
