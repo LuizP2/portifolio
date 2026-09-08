@@ -109,6 +109,25 @@ the number of tags has to match across locales.
 Metrics in the "The Numbers" band live in `src/i18n/content.ts` and each carries
 a `source` pointing at the case study it came from. Keep it that way.
 
+## The hero portrait
+
+`src/assets/portrait-source.jpg` is the untouched photograph. The monochrome,
+darkened version the site actually ships is generated from it:
+
+```bash
+node scripts/make-portrait.mjs   # → src/assets/portrait.jpg
+```
+
+The look is baked at author time rather than applied with CSS filters, so the
+browser never repaints a full-height image, and the committed asset is the
+asset that ships. Astro then emits responsive WebP variants at build time.
+Replace `portrait-source.jpg` and re-run the script to change the photo.
+
+The portrait dissolves into the page through a CSS mask rather than ending on a
+hard edge — left-to-right from `lg` up, top-and-bottom below it. From `lg` the
+hero is a two-column grid, so the copy and the photograph cannot overlap at any
+width; below that the columns collapse and the photo follows the copy.
+
 ## Regenerating the OG image
 
 `public/og.png` is a 1200×630 screenshot of `scripts/og.template.html`, taken in

@@ -43,7 +43,17 @@ These rules hold in all three languages. In the `stack` tags, product names
 No Three.js, no WebGL, no 3D. See `src/scripts/motion.ts`.
 
 **Colour.** One accent — `--color-signal` (#C8FF3D) — used only on metric
-numbers and the availability status. Never add a second accent.
+numbers and the availability status. Never add a second accent. The hero
+portrait is monochrome for the same reason: colour in the photograph would be a
+second accent by the back door.
+
+**The hero follows `reference/Hero.png`**, which departs from section 5.2 of the
+brief: sentence-case headline at a lighter weight (`display-hero`) instead of
+the giant uppercase `display`, a portrait on the right, specialty chips instead
+of a right-aligned list, and no rotating badge. The rest of the site still uses
+`display`. The hero also carries `positioning.headline`, so the section below it
+prints only `positioning.body` — that sentence must never appear twice on one
+page.
 
 **No contact form.** The email address is the call to action.
 

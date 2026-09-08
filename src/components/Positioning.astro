@@ -7,11 +7,12 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
-<section class="shell section-y flex min-h-[80svh] items-center justify-center">
+<section class="shell section-y flex min-h-[70svh] items-center justify-center">
   <div data-reveal class="max-w-4xl text-center">
-    <p class="display-md text-text" style="text-transform: none;">
-      {t('positioning.headline')}
+    <p
+      class="text-balance font-body text-[clamp(1.375rem,3vw,2.125rem)] leading-[1.45] text-text"
+    >
+      {t('positioning.body')}
     </p>
-    <p class="prose-body mx-auto mt-10 text-muted">{t('positioning.body')}</p>
   </div>
 </section>

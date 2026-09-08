@@ -1,4 +1,6 @@
 ---
+import { Image } from 'astro:assets';
+import portrait from '../assets/portrait.jpg';
 import type { Locale } from '../i18n/ui';
 import { useTranslations } from '../i18n/utils';
 import { specialties } from '../i18n/content';
@@ -8,44 +10,45 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 ---
 
+<!--
+  Two real grid columns from lg up, rather than copy floated over an absolute
+  image: the portrait can never creep under the headline, at any width. Below
+  lg the columns collapse and the portrait simply follows the copy.
+-->
 <section
-  class="shell relative flex min-h-[86svh] flex-col justify-between pt-32 pb-14 md:min-h-svh"
+  class="relative overflow-hidden lg:grid lg:min-h-svh lg:grid-cols-[1fr_minmax(0,52%)] lg:items-stretch"
 >
-  <div data-reveal class="pt-[8vh]">
-    <h1 class="display text-text">
-      <span class="block">{t('hero.line1')}</span>
-      <span class="block pl-[8vw] md:pl-[14vw]">{t('hero.line2')}</span>
-    </h1>
-  </div>
-
-  <div class="mt-16 flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
-    <div class="relative hidden size-28 shrink-0 place-items-center md:grid" aria-hidden="true">
-      <svg viewBox="0 0 100 100" class="badge-spin size-full">
-        <defs>
-          <path id="badge-arc" d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" />
-        </defs>
-        <text
-          class="fill-muted"
-          style="font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase;"
-        >
-          <textPath href="#badge-arc">{t('hero.scroll')}{t('hero.scroll')}</textPath>
-        </text>
-      </svg>
-      <span class="absolute text-signal text-xl leading-none">✳</span>
-    </div>
-
-    <div data-reveal class="md:text-right">
-      <p class="label text-signal flex items-center gap-2 md:justify-end">
+  <div class="shell flex items-center pt-32 pb-4 lg:py-32">
+    <div data-reveal class="w-full max-w-[42rem]">
+      <p class="label flex items-center gap-2 text-signal">
         <span class="signal-pulse inline-block size-1.5 rounded-full bg-signal"></span>
-        {t('hero.available')} ✳
+        {t('hero.available')}
       </p>
-      <p class="mt-2 text-sm text-muted">{t('hero.location')}</p>
+
+      <h1 class="display-hero mt-7 text-text">
+        <span class="block">{t('hero.line1')}</span>
+        <span class="block">{t('hero.line2')}</span>
+      </h1>
+
+      <p class="prose-body mt-8 max-w-[34ch] text-muted">{t('positioning.headline')}</p>
+
+      <ul class="mt-10 flex flex-wrap gap-2" aria-label={t('hero.specialties')}>
+        {specialties[lang].map((s) => <li class="chip">{s}</li>)}
+      </ul>
+
+      <p class="label mt-10">{t('hero.location')}</p>
     </div>
   </div>
-</section>
 
-<section class="shell" aria-label={t('hero.specialties')}>
-  <div data-reveal class="flex flex-col items-start gap-1.5 md:items-end">
-    {specialties[lang].map((s) => <span class="label">{s}</span>)}
+  <div class="portrait relative mt-12 h-[52svh] w-full select-none lg:mt-0 lg:h-auto">
+    <Image
+      src={portrait}
+      alt={t('hero.portraitAlt')}
+      widths={[480, 720, 960, 1358]}
+      sizes="(min-width: 64rem) 52vw, 100vw"
+      loading="eager"
+      decoding="async"
+      class="absolute inset-0 size-full object-cover object-[62%_20%] lg:object-[center_16%]"
+    />
   </div>
 </section>

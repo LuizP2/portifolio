@@ -114,6 +114,19 @@
   letter-spacing: -0.02em;
 }
 
+/**
+ * Hero headline. Sentence case and a lighter weight than `display` — the
+ * portrait beside it already carries the weight, so shouting over it would
+ * only crowd the frame.
+ */
+@utility display-hero {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(2.5rem, 5.4vw, 5.25rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+}
+
 @utility display-md {
   font-family: var(--font-display);
   font-weight: 700;
@@ -207,6 +220,48 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
+   Hero portrait.
+   Masked rather than cropped: the image has no edge, it dissolves into the
+   page. Below md it sits under the text and fades top and bottom instead.
+   ───────────────────────────────────────────────────────────── */
+.portrait {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #000 18%,
+    #000 78%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 78%, transparent 100%);
+}
+
+@media (min-width: 64rem) {
+  .portrait {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 34%),
+      linear-gradient(to bottom, #000 78%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, transparent 0%, #000 34%),
+      linear-gradient(to bottom, #000 78%, transparent 100%);
+    mask-composite: intersect;
+  }
+}
+
+/* Tag chips under the hero copy. */
+@utility chip {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  color: var(--color-muted);
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+  padding: 0.625rem 0.75rem;
+  white-space: nowrap;
+}
+
+/* ─────────────────────────────────────────────────────────────
    Fixed nav.
    Over the hero it sits bare and inverts against the artwork. Once the page
    scrolls it takes a backdrop, so right-aligned content passing underneath
@@ -217,7 +272,7 @@
   inset-inline: 0;
   top: 0;
   z-index: 40;
-  mix-blend-mode: difference;
+  isolation: isolate;
   border-bottom: 1px solid transparent;
   transition:
     background-color 0.3s ease,
@@ -225,11 +280,31 @@
     border-color 0.3s ease;
 }
 
+/* Keeps the nav readable over the hero portrait, where a blend mode would not. */
+.site-nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  inset: 0 0 -2rem 0;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--color-ink) 94%, transparent) 0%,
+    color-mix(in srgb, var(--color-ink) 72%, transparent) 55%,
+    transparent 100%
+  );
+  transition: opacity 0.3s ease;
+}
+
 .site-nav[data-scrolled] {
-  mix-blend-mode: normal;
   background-color: color-mix(in srgb, var(--color-ink) 82%, transparent);
   backdrop-filter: blur(10px);
   border-bottom-color: var(--color-line);
+}
+
+.site-nav[data-scrolled]::before {
+  opacity: 0;
 }
 
 /* Rotating badge — charm only, disabled under reduced motion. */

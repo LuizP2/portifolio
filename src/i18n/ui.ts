@@ -44,6 +44,7 @@ export const ui = {
     'hero.available': 'Available for work',
     'hero.location': 'Based in Rio de Janeiro, Brazil · Remote worldwide',
     'hero.specialties': 'Specialties',
+    'hero.portraitAlt': 'Luiz Paulo Souza de Medeiros, backend developer',
 
     'positioning.headline':
       'I build the systems your product runs on — and I explain them in plain language.',
@@ -105,6 +106,7 @@ export const ui = {
     'hero.available': 'Disponível para trabalhar',
     'hero.location': 'Rio de Janeiro, Brasil · Remoto para o mundo todo',
     'hero.specialties': 'Especialidades',
+    'hero.portraitAlt': 'Luiz Paulo Souza de Medeiros, desenvolvedor backend',
 
     'positioning.headline':
       'Eu construo os sistemas que sustentam o seu produto — e explico tudo em linguagem simples.',
@@ -166,6 +168,7 @@ export const ui = {
     'hero.available': 'Disponible para trabajar',
     'hero.location': 'Río de Janeiro, Brasil · Remoto en todo el mundo',
     'hero.specialties': 'Especialidades',
+    'hero.portraitAlt': 'Luiz Paulo Souza de Medeiros, desarrollador backend',
 
     'positioning.headline':
       'Construyo los sistemas sobre los que funciona tu producto — y los explico en lenguaje claro.',
