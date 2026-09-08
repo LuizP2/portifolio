@@ -30,19 +30,13 @@ npm run check     # astro + TypeScript diagnostics
 ## Before going live
 
 Identity and links live in `src/data/site.ts`. Upwork, LinkedIn and GitHub are
-filled in; they also feed the `sameAs` field of the JSON-LD `Person` block.
+filled in; they also feed the `sameAs` field of the JSON-LD `Person` block. A
+profile with an empty `url` renders as plain muted text, never a dead link.
 
-One value is still blank — `sourceRepo`, the repository of this site itself,
-linked from the footer as "Source on GitHub". Set it once the repo is pushed:
-
-```ts
-export const sourceRepo = 'https://github.com/LuizP2/<repo>';
-```
-
-A profile with an empty `url` renders as plain muted text, never a dead link.
-
-Also set the real domain in `astro.config.mjs` (`site:`) and in
-`public/robots.txt` if it is not `luizmedeiros.dev`.
+Set the real domain in `astro.config.mjs` (`site:`) and in `public/robots.txt`
+if it is not `luizmedeiros.dev`. Those two values drive the canonical URL, the
+Open Graph image URL and the sitemap, so a stale domain shows up in the Upwork
+link preview.
 
 ## Editing content
 

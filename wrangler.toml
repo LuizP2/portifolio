@@ -1,0 +1,6 @@
+# Cloudflare Pages — direct upload (`npx wrangler pages deploy dist`).
+# Not needed when the project is connected to GitHub; kept so a manual deploy
+# works from any machine without re-entering settings.
+name = "luizmedeiros-dev"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-09-08"

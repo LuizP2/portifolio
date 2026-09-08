@@ -24,11 +24,8 @@ export const profiles: Profile[] = [
   { label: 'GitHub', url: 'https://github.com/LuizP2' },
 ];
 
-/**
- * Repository of this site itself — linked from the footer.
- * Still blank: this is the repo URL, not the GitHub profile above.
- */
-export const sourceRepo = '';
+/** Repository of this site itself — linked from the footer. */
+export const sourceRepo = 'https://github.com/LuizP2/portifolio';
 
 export const specialties = [
   'REST APIs',
