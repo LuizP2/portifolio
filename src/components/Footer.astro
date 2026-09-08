@@ -1,6 +1,12 @@
 ---
 import { sourceRepo } from '../data/site';
+import type { Locale } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
 import Rule from './Rule.astro';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
 const year = new Date().getFullYear();
 ---
 
@@ -8,14 +14,19 @@ const year = new Date().getFullYear();
   <Rule class="mb-8" />
   <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
     <p class="label">
-      Built with Astro. No trackers.{' '}
+      {t('footer.built')}{' '}
       {
         sourceRepo ? (
-          <a href={sourceRepo} rel="noopener" target="_blank" class="text-text hover:text-signal transition-colors duration-300">
-            Source on GitHub ↗
+          <a
+            href={sourceRepo}
+            rel="noopener"
+            target="_blank"
+            class="text-text transition-colors duration-300 hover:text-signal"
+          >
+            {t('footer.source')} ↗
           </a>
         ) : (
-          <span>Source on GitHub</span>
+          <span>{t('footer.source')}</span>
         )
       }
     </p>

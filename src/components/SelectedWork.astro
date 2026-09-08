@@ -1,27 +1,26 @@
 ---
-import { getCollection } from 'astro:content';
+import type { Locale } from '../i18n/ui';
+import { localePath, useTranslations } from '../i18n/utils';
+import { getWork, slugOf } from '../i18n/work';
 import Rule from './Rule.astro';
 
-const entries = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const entries = await getWork(lang);
 
 /**
- * The demo projects of Section 7 are Phase 2 — not built yet.
- * The row stays in the index (it is in the spec) but is explicitly marked
- * as in progress and links nowhere, so nothing is claimed that is not real.
+ * The demo projects of section 7 of the brief are Phase 2 — not built yet.
+ * The row stays in the index because it is in the spec, but it is marked as in
+ * progress and links nowhere: nothing here claims something that does not run.
  */
-const upcoming = {
-  year: '2026',
-  title: '[Demo projects]',
-  summary: 'Things you can click and test',
-  category: 'Live demos',
-};
-
 const total = String(entries.length + 1).padStart(2, '0');
 ---
 
 <section id="work" class="shell section-y">
   <div class="mb-14 flex items-baseline justify-between">
-    <h2 class="label">Selected work</h2>
+    <h2 class="label">{t('work.title')}</h2>
     <span class="label">01 / {total}</span>
   </div>
 
@@ -31,12 +30,10 @@ const total = String(entries.length + 1).padStart(2, '0');
         <li>
           <Rule />
           <a
-            href={`/work/${entry.id}/`}
+            href={localePath(lang, `/work/${slugOf(entry)}/`)}
             class="group grid grid-cols-12 items-baseline gap-x-4 gap-y-2 py-7 transition-colors duration-300 lg:py-9"
           >
-            <span class="label col-span-2 lg:col-span-1">
-              {String(i + 1).padStart(2, '0')}
-            </span>
+            <span class="label col-span-2 lg:col-span-1">{String(i + 1).padStart(2, '0')}</span>
             <span class="label col-span-2 lg:col-span-1">{entry.data.year}</span>
             <span class="display-sm col-span-8 text-text transition-colors duration-300 group-hover:text-signal lg:col-span-4">
               {entry.data.title}
@@ -44,13 +41,11 @@ const total = String(entries.length + 1).padStart(2, '0');
             <span class="col-span-12 text-base text-muted lg:col-span-4 lg:text-[1.0625rem]">
               {entry.data.summary}
             </span>
-            <span class="label col-span-12 lg:col-span-2 lg:text-right">
-              {entry.data.category}
-            </span>
+            <span class="label col-span-12 lg:col-span-2 lg:text-right">{entry.data.category}</span>
 
             <span class="col-span-12 max-h-0 overflow-hidden opacity-0 transition-all duration-500 ease-out-expo group-hover:max-h-40 group-hover:opacity-100 group-focus:max-h-40 group-focus:opacity-100 lg:col-start-3 lg:col-span-10">
               <span class="prose-body block pt-4 text-muted">{entry.data.teaser}</span>
-              <span class="label mt-3 block text-signal">View project →</span>
+              <span class="label mt-3 block text-signal">{t('work.view')}</span>
             </span>
           </a>
         </li>
@@ -60,15 +55,13 @@ const total = String(entries.length + 1).padStart(2, '0');
     <li>
       <Rule />
       <div class="grid grid-cols-12 items-baseline gap-x-4 gap-y-2 py-7 lg:py-9">
-        <span class="label col-span-2 lg:col-span-1">
-          {String(entries.length + 1).padStart(2, '0')}
-        </span>
-        <span class="label col-span-2 lg:col-span-1">{upcoming.year}</span>
-        <span class="display-sm col-span-8 text-muted lg:col-span-4">{upcoming.title}</span>
+        <span class="label col-span-2 lg:col-span-1">{total}</span>
+        <span class="label col-span-2 lg:col-span-1">2026</span>
+        <span class="display-sm col-span-8 text-muted lg:col-span-4">{t('work.soonTitle')}</span>
         <span class="col-span-12 text-base text-muted lg:col-span-4 lg:text-[1.0625rem]">
-          {upcoming.summary}
+          {t('work.soonSummary')}
         </span>
-        <span class="label col-span-12 lg:col-span-2 lg:text-right">In progress</span>
+        <span class="label col-span-12 lg:col-span-2 lg:text-right">{t('work.soonStatus')}</span>
       </div>
     </li>
   </ul>

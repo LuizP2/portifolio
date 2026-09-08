@@ -1,110 +1,15 @@
 ---
-import { getCollection, render } from 'astro:content';
-import Base from '../../layouts/Base.astro';
-import Rule from '../../components/Rule.astro';
-import { site } from '../../data/site';
+import WorkPage from '../../components/WorkPage.astro';
+import { getWork, slugOf, type WorkEntry } from '../../i18n/work';
 
 export async function getStaticPaths() {
-  const entries = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+  const entries = await getWork('en');
   return entries.map((entry, i) => ({
-    params: { slug: entry.id },
-    props: { entry, next: entries[(i + 1) % entries.length] },
+    params: { slug: slugOf(entry) },
+    props: { entry, next: entries[(i + 1) % entries.length]! },
   }));
 }
 
-const { entry, next } = Astro.props;
-const d = entry.data;
-const { Content } = await render(entry);
+const { entry, next } = Astro.props as { entry: WorkEntry; next: WorkEntry };
 ---
-
-<Base
-  title={`${d.title} — ${site.name}`}
-  description={d.problem}
-  path={`/work/${entry.id}/`}
->
-  <article class="shell pt-36 pb-[var(--spacing-section)]">
-    <a href="/#work" class="label hover:text-signal transition-colors duration-300">
-      ← Selected work
-    </a>
-
-    <header data-reveal class="mt-12">
-      <h1 class="display text-text">{d.title}</h1>
-      <p class="mt-6 flex flex-wrap gap-x-6 gap-y-1">
-        <span class="label">{d.period}</span>
-        <span class="label">{d.category}</span>
-      </p>
-    </header>
-
-    <div class="mt-24 flex flex-col">
-      <section>
-        <Rule />
-        <div data-reveal class="grid grid-cols-12 gap-x-4 gap-y-4 py-12">
-          <h2 class="label col-span-12 md:col-span-3">The problem</h2>
-          <p class="prose-body col-span-12 md:col-span-9">{d.problem}</p>
-        </div>
-      </section>
-
-      <section>
-        <Rule />
-        <div data-reveal class="grid grid-cols-12 gap-x-4 gap-y-4 py-12">
-          <h2 class="label col-span-12 md:col-span-3">What I built</h2>
-          <p class="prose-body col-span-12 md:col-span-9">{d.built}</p>
-        </div>
-      </section>
-
-      <section>
-        <Rule />
-        <div data-reveal class="grid grid-cols-12 gap-x-4 gap-y-4 py-12">
-          <h2 class="label col-span-12 md:col-span-3">The result</h2>
-          <ul class="col-span-12 flex flex-col gap-4 md:col-span-9">
-            {
-              d.results.map((r) => (
-                <li class="flex items-start gap-4">
-                  <span class="mt-[0.65em] inline-block size-1.5 shrink-0 rounded-full bg-signal" />
-                  <span class="text-[1.125rem] leading-[1.7]">{r}</span>
-                </li>
-              ))
-            }
-          </ul>
-        </div>
-      </section>
-
-      <section>
-        <Rule />
-        <div data-reveal class="grid grid-cols-12 gap-x-4 gap-y-4 py-12">
-          <h2 class="label col-span-12 md:col-span-3">Under the hood</h2>
-          <div class="col-span-12 md:col-span-9">
-            <ul class="flex flex-wrap gap-2">
-              {
-                d.stack.map((t) => (
-                  <li class="label rounded-full border border-line bg-surface px-3 py-1.5">{t}</li>
-                ))
-              }
-            </ul>
-            {
-              d.confidential && (
-                <p class="mt-8 max-w-[62ch] text-sm text-muted">
-                  Architecture and results only. No proprietary code, customer data or product
-                  screenshots are shown.
-                </p>
-              )
-            }
-          </div>
-        </div>
-      </section>
-      <Rule />
-    </div>
-
-    <Content />
-
-    <nav class="mt-24">
-      <span class="label">Next</span>
-      <a
-        href={`/work/${next.id}/`}
-        class="display-md mt-4 block text-text transition-colors duration-300 hover:text-signal"
-      >
-        {next.data.title} →
-      </a>
-    </nav>
-  </article>
-</Base>
+<WorkPage lang="en" entry={entry} next={next} />

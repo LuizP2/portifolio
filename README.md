@@ -44,11 +44,45 @@ Upwork link preview points at a domain that does not resolve. Remove it once
 `public/robots.txt` hardcodes the sitemap URL; update it when the domain
 changes.
 
+## Languages
+
+English (`/`), Portuguese (`/pt/`) and Spanish (`/es/`). Each locale is a set of
+fully static pages — no client-side string swapping — so every language is
+indexable, readable without JavaScript, and never mixed on one screen.
+
+```
+src/i18n/ui.ts        every interface string, per locale
+src/i18n/content.ts   the specialty list and the metric band
+src/i18n/work.ts      loads case studies for one locale, guards against drift
+src/content/work/{en,pt,es}/*.md
+```
+
+`ui.ts` is typed: a key missing from one locale is a compile error, not a
+silent fallback to English.
+
+**Which language a visitor gets.** A saved choice wins; otherwise the browser's
+own language decides; otherwise English. The inline script in `Base.astro` only
+ever redirects *away from* the unprefixed English URLs — a URL that names its
+language (`/pt/…`) was chosen deliberately and is left alone, which is also
+what makes a redirect loop impossible. Clicking the switcher writes
+`preferred-lang` to `localStorage`. With JavaScript off there is no redirect and
+no persistence: visitors get English and the switcher still works, because it
+is three ordinary links.
+
+**Adding a language.** Add it to `locales` in `src/i18n/ui.ts`, add its block to
+`ui` and to `src/i18n/content.ts`, add `src/content/work/<code>/*.md`, and add
+it to `i18n.locales` in `astro.config.mjs`. Routes, hreflang, the sitemap and
+the switcher all follow from those lists.
+
+**The 404 page is English only.** A static host serves exactly one 404
+document, so it stays in the default locale.
+
 ## Editing content
 
-Each case study is one Markdown file in `src/content/work/`. The four-part
-structure — problem / what I built / result / under the hood — lives in
-frontmatter, so no page can drift out of shape:
+Each case study is one Markdown file per locale in
+`src/content/work/<locale>/`. The four-part structure — problem / what I built
+/ result / under the hood — lives in frontmatter, so no page can drift out of
+shape:
 
 ```yaml
 order: 1              # position in the Selected Work index
@@ -65,11 +99,15 @@ stack: ["Java 21"]    # mono tags — the jargon escape hatch
 confidential: true    # adds the "architecture and results only" note
 ```
 
-Adding a file adds a page at `/work/<filename>/` and a row in the index. The
-schema in `src/content.config.ts` fails the build if a field is missing.
+Adding a file adds a page at `/work/<filename>/` and a row in the index — do it
+in every locale directory, or the build fails. `src/content.config.ts` catches a
+missing field; `src/i18n/work.ts` catches a translation that is missing, extra,
+or whose `order`/`year` disagrees with English. Stack tags may be translated
+where they are descriptive ("software testing"), but product names are not, and
+the number of tags has to match across locales.
 
-Metrics in the "The Numbers" band live in `src/data/site.ts` and each carries a
-`source` pointing at the case study it came from. Keep it that way.
+Metrics in the "The Numbers" band live in `src/i18n/content.ts` and each carries
+a `source` pointing at the case study it came from. Keep it that way.
 
 ## Regenerating the OG image
 

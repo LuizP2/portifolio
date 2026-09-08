@@ -1,23 +1,36 @@
 ---
 import '../styles/global.css';
 import { site, profiles } from '../data/site';
+import { htmlLang, locales, type Locale } from '../i18n/ui';
+import { localePath, useTranslations } from '../i18n/utils';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 
 interface Props {
+  lang: Locale;
   title: string;
   description?: string;
-  /** Page-level canonical path, e.g. "/work/speake/" */
+  /**
+   * Locale-independent path — "/" or "/work/speake/". Every locale's URL is
+   * derived from it, so the alternates can never point at a page that does not
+   * exist.
+   */
   path?: string;
 }
 
-const { title, description = site.description, path = '/' } = Astro.props;
-const canonical = new URL(path, Astro.site ?? site.url).href;
-const ogImage = new URL('/og.png', Astro.site ?? site.url).href;
+const { lang, title, path = '/' } = Astro.props;
+const t = useTranslations(lang);
+const description = Astro.props.description ?? t('meta.description');
+
+const origin = Astro.site ?? new URL('https://luizmedeiros.dev');
+const href = (locale: Locale) => new URL(localePath(locale, path), origin).href;
+
+const canonical = href(lang);
+const ogImage = new URL('/og.png', origin).href;
 ---
 
 <!doctype html>
-<html lang="en" class="bg-ink">
+<html lang={htmlLang[lang]} class="bg-ink">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -29,15 +42,23 @@ const ogImage = new URL('/og.png', Astro.site ?? site.url).href;
     <meta name="theme-color" content="#111111" />
     <meta name="color-scheme" content="dark" />
 
+    {
+      locales.map((locale) => (
+        <link rel="alternate" hreflang={htmlLang[locale]} href={href(locale)} />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={href('en')} />
+
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={htmlLang[lang].replace('-', '_')} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content={`${site.fullName} — ${site.role}`} />
+    <meta property="og:image:alt" content={`${site.fullName} — ${t('meta.role')}`} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
@@ -61,7 +82,6 @@ const ogImage = new URL('/og.png', Astro.site ?? site.url).href;
       crossorigin
     />
 
-    <!-- Marks that JS is alive, so motion initial-states only apply when they can be undone. -->
     <script is:inline>
       // Motion initial-states apply only while JS is alive to undo them.
       document.documentElement.classList.add('js');
@@ -71,6 +91,51 @@ const ogImage = new URL('/og.png', Astro.site ?? site.url).href;
           document.documentElement.classList.remove('js');
         }
       }, 2000);
+
+      // Language routing. Runs before paint so a redirect never flashes English.
+      //
+      // Only ever redirects AWAY from the unprefixed default locale: a URL that
+      // names its language (/pt/…, /es/…) was chosen deliberately — by the
+      // visitor, or by whoever sent them the link — and is left alone. That is
+      // also what makes a redirect loop impossible.
+      (function () {
+        try {
+          var current = (document.documentElement.lang || 'en').slice(0, 2).toLowerCase();
+          if (current !== 'en') return;
+
+          var target = null;
+          try {
+            target = localStorage.getItem('preferred-lang');
+          } catch (e) {
+            /* storage blocked — fall through to the browser's own preference */
+          }
+
+          if (!target) {
+            var preferred = navigator.languages || [navigator.language || ''];
+            for (var i = 0; i < preferred.length; i++) {
+              var code = String(preferred[i] || '').slice(0, 2).toLowerCase();
+              if (code === 'en' || code === 'pt' || code === 'es') {
+                target = code;
+                break;
+              }
+            }
+          }
+
+          if (!target || target === 'en') return;
+
+          var alt = document.querySelector('link[rel="alternate"][hreflang^="' + target + '"]');
+          if (!alt) return;
+
+          // Same-origin only: the alternates are absolute and built from
+          // SITE_URL, which may not be the host actually serving this page.
+          var to = new URL(alt.href).pathname + location.search + location.hash;
+          if (to !== location.pathname + location.search + location.hash) {
+            location.replace(to);
+          }
+        } catch (e) {
+          /* never let language routing break the page */
+        }
+      })();
     </script>
 
     <script
@@ -81,10 +146,14 @@ const ogImage = new URL('/og.png', Astro.site ?? site.url).href;
         '@type': 'Person',
         name: site.fullName,
         alternateName: site.name,
-        jobTitle: site.role,
+        jobTitle: t('meta.role'),
         email: `mailto:${site.email}`,
-        url: site.url,
-        address: { '@type': 'PostalAddress', addressLocality: 'Rio de Janeiro', addressCountry: 'BR' },
+        url: canonical,
+        address: {
+          '@type': 'PostalAddress',
+          addressLocality: 'Rio de Janeiro',
+          addressCountry: 'BR',
+        },
         sameAs: profiles.filter((p) => p.url).map((p) => p.url),
       })}
     />
@@ -95,14 +164,14 @@ const ogImage = new URL('/og.png', Astro.site ?? site.url).href;
       href="#main"
       class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-signal focus:px-4 focus:py-2 focus:text-ink focus:label"
     >
-      Skip to content
+      {t('a11y.skip')}
     </a>
 
-    <Nav />
+    <Nav lang={lang} path={path} />
     <main id="main">
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
 
     <script>
       import '../scripts/motion';

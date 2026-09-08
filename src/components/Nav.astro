@@ -1,15 +1,78 @@
 ---
 import { site } from '../data/site';
+import { localeNames, locales, type Locale } from '../i18n/ui';
+import { localePath, useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Locale;
+  /** Locale-independent path, so each switch lands on the same page. */
+  path: string;
+}
+
+const { lang, path } = Astro.props;
+const t = useTranslations(lang);
 ---
 
-<header id="site-nav" class="site-nav shell flex items-center justify-between py-5">
-  <a href="/" class="display-sm text-text transition-colors duration-300 hover:text-signal">
+<header id="site-nav" class="site-nav shell flex items-center justify-between gap-4 py-5">
+  <a
+    href={localePath(lang, '/')}
+    class="display-sm text-text transition-colors duration-300 hover:text-signal"
+  >
     {site.name}
   </a>
-  <a
-    href={`mailto:${site.email}`}
-    class="label text-text transition-colors duration-300 hover:text-signal"
-  >
-    Contact&nbsp;→
-  </a>
+
+  <div class="flex items-center gap-5 sm:gap-8">
+    <nav aria-label={t('a11y.language')}>
+      <ul class="flex items-center gap-1" data-lang-switch>
+        {
+          locales.map((locale) => (
+            <li class="flex items-center">
+              <a
+                href={localePath(locale, path)}
+                hreflang={locale}
+                data-lang={locale}
+                aria-current={locale === lang ? 'true' : undefined}
+                class:list={[
+                  'label px-1 transition-colors duration-300 hover:text-signal',
+                  locale === lang ? 'text-signal' : 'text-muted',
+                ]}
+              >
+                {localeNames[locale]}
+              </a>
+              {locale !== locales[locales.length - 1] && (
+                <span class="label select-none px-0.5" aria-hidden="true">
+                  /
+                </span>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <a
+      href={`mailto:${site.email}`}
+      class="label hidden text-text transition-colors duration-300 hover:text-signal sm:inline"
+    >
+      {t('nav.contact')}&nbsp;→
+    </a>
+  </div>
 </header>
+
+<script is:inline>
+  // Remember an explicit language choice so the next visit skips the redirect.
+  // The links work without this — it only adds the memory.
+  (function () {
+    var root = document.querySelector('[data-lang-switch]');
+    if (!root) return;
+    root.addEventListener('click', function (event) {
+      var link = event.target instanceof Element ? event.target.closest('a[data-lang]') : null;
+      if (!link) return;
+      try {
+        localStorage.setItem('preferred-lang', link.getAttribute('data-lang'));
+      } catch (e) {
+        /* storage blocked — the navigation still happens */
+      }
+    });
+  })();
+</script>

@@ -13,8 +13,13 @@ field empty and say so — do not fill the gap with a plausible guess.
 **Speake is the current employer.** Architecture and measured results only.
 Never proprietary code, customer data, business secrets, or product screenshots.
 
-**Language.** Body copy is written for someone who does not know what an API is.
-Jargon goes in the mono `stack` tags, never in a sentence. Concretely:
+**Language.** The site ships in English (`/`), Portuguese (`/pt/`) and Spanish
+(`/es/`). English is the default and keeps the unprefixed URLs. Never mix two
+languages on one screen — every string has an entry in each locale of
+`src/i18n/ui.ts`, and a missing key is a compile error.
+
+Body copy is written for someone who does not know what an API is. Jargon goes
+in the mono `stack` tags, never in a sentence. Concretely:
 
 | Never write | Write |
 |---|---|
@@ -22,7 +27,9 @@ Jargon goes in the mono `stack` tags, never in a sentence. Concretely:
 | "Idempotent webhook handling" | "A customer never gets charged twice, even if the connection drops" |
 | "Reduced p95 latency by 65%" | "Almost 3x faster — from 350 milliseconds to 120" |
 
-English is the default. Never mix English and Portuguese on the same screen.
+These rules hold in all three languages. In the `stack` tags, product names
+(Java, Docker, PostgreSQL) stay as they are everywhere; descriptive terms
+("software testing") are translated like any other prose.
 
 **Typography.**
 1. Mono (`label`) never appears in a paragraph — labels, tags, numbering and
@@ -44,19 +51,23 @@ numbers and the availability status. Never add a second accent.
 
 ```
 src/
-  content/work/*.md      one case study per file; frontmatter holds the
-                         four fixed sections (schema in content.config.ts)
-  data/site.ts           identity, links, specialties, metrics, "how I work"
+  content/work/{en,pt,es}/*.md   one case study per locale; frontmatter holds
+                                 the four fixed sections
+  i18n/ui.ts             every interface string, per locale (typed)
+  i18n/content.ts        specialty list and metric band, per locale
+  i18n/work.ts           loads case studies for a locale; guards drift
+  data/site.ts           identity and links only — nothing translatable
   styles/global.css      @font-face, @theme tokens, typographic utilities
   scripts/motion.ts      GSAP + ScrollTrigger, the two primitives
-  components/            one per section of the page
-  layouts/Base.astro     head, SEO, JSON-LD, the .js motion gate
-  pages/index.astro      section order
-  pages/work/[...slug]   case study template
+  components/            one per section; each takes a `lang` prop
+  layouts/Base.astro     head, SEO, hreflang, JSON-LD, language routing
+  pages/index.astro      English home; [lang]/index.astro covers pt and es
+  pages/work/[...slug]   English case study; [lang]/work/[...slug] the rest
 ```
 
-Metrics in `src/data/site.ts` each carry a `source` field naming the case study
-they came from. Keep that link intact — it is what makes the numbers auditable.
+Metrics in `src/i18n/content.ts` each carry a `source` field naming the case
+study they came from. Keep that link intact — it is what makes the numbers
+auditable.
 
 ## Before shipping a change
 
@@ -66,5 +77,5 @@ npm run preview
 ```
 
 Then confirm: readable with JavaScript disabled, `prefers-reduced-motion`
-collapses the animations, no horizontal scroll at 360px, and Lighthouse still
-≥95 in all four categories.
+collapses the animations, no horizontal scroll at 360px, Lighthouse still ≥95
+in all four categories, and every locale renders — `/`, `/pt/`, `/es/`.

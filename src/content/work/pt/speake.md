@@ -1,0 +1,36 @@
+---
+order: 1
+year: "2025"
+period: "2025 → hoje"
+title: "Speake"
+summary: "Plataforma de áudio, construída do zero"
+category: "Backend / API"
+teaser: "Uma plataforma para estações de áudio precisava de um backend que ainda não existia — contas, logins, pagamentos, entrega. Tudo, do zero."
+problem: "Uma plataforma para estações de áudio precisava de um backend que ainda não existia. Tudo — contas, logins, pagamentos, entrega de conteúdo — teve que ser construído do zero."
+built: "Todo o lado do servidor. A parte que o usuário nunca vê: como ele entra na conta com segurança, como a assinatura é cobrada corretamente todo mês, como o aplicativo continua rápido quando centenas de pessoas usam ao mesmo tempo."
+results:
+  - "500+ usuários"
+  - "~5.000 requisições por dia"
+  - "Respostas da API 65% mais rápidas (350ms → 120ms)"
+  - "Praticamente zero indisponibilidade nos deploys"
+stack:
+  - "Java 21"
+  - "Spring Boot 3.5"
+  - "Spring Security"
+  - "OAuth2"
+  - "JWT/Auth0"
+  - "Keycloak OIDC"
+  - "2FA/TOTP"
+  - "Stripe"
+  - "PostgreSQL"
+  - "Redis"
+  - "Caffeine"
+  - "Docker"
+  - "Jenkins"
+  - "AWS EC2/VPC"
+  - "Blue-Green"
+  - "OpenTelemetry"
+  - "Prometheus"
+  - "Grafana"
+confidential: true
+---

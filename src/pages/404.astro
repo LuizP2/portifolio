@@ -1,21 +1,28 @@
 ---
 import Base from '../layouts/Base.astro';
 import { site } from '../data/site';
+import { useTranslations } from '../i18n/utils';
+
+/**
+ * A static host serves exactly one 404 document, so this one is English — the
+ * default locale. It is the only page that cannot be localised by routing, and
+ * it is not indexed, so no screen ever mixes two languages.
+ */
+const lang = 'en' as const;
+const t = useTranslations(lang);
 ---
 
-<Base title={`Page not found — ${site.name}`} description="This page does not exist." path="/404">
+<Base lang={lang} title={`${t('404.title')} — ${site.name}`} description={t('404.body')} path="/404">
   <section class="shell flex min-h-svh flex-col justify-center">
     <div data-reveal>
-      <p class="label">Error 404</p>
-      <h1 class="display mt-6 text-text">Nothing here</h1>
-      <p class="prose-body mt-8 text-muted">
-        This page does not exist — it may have moved, or the link may be wrong.
-      </p>
+      <p class="label">{t('404.label')}</p>
+      <h1 class="display mt-6 text-text">{t('404.title')}</h1>
+      <p class="prose-body mt-8 text-muted">{t('404.body')}</p>
       <a
         href="/"
         class="label mt-10 inline-block text-signal transition-opacity duration-300 hover:opacity-70"
       >
-        Back to home →
+        {t('404.back')}
       </a>
     </div>
   </section>

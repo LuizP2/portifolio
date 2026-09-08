@@ -1,10 +1,16 @@
 ---
 import { site, profiles } from '../data/site';
+import type { Locale } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
 ---
 
 <section id="contact" class="shell section-y">
   <div data-reveal>
-    <h2 class="display text-text">Get in touch</h2>
+    <h2 class="display text-text">{t('contact.title')}</h2>
 
     <a
       href={`mailto:${site.email}`}
@@ -30,9 +36,7 @@ import { site, profiles } from '../data/site';
             </li>
           ) : (
             <li>
-              <span class="label" title="Link pending">
-                {p.label}
-              </span>
+              <span class="label">{p.label}</span>
             </li>
           )
         )

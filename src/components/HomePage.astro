@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from './Hero.astro';
+import Positioning from './Positioning.astro';
+import SelectedWork from './SelectedWork.astro';
+import Numbers from './Numbers.astro';
+import HowIWork from './HowIWork.astro';
+import Contact from './Contact.astro';
+import { site } from '../data/site';
+import type { Locale } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<Base lang={lang} title={`${site.fullName} — ${t('meta.role')}`} path="/">
+  <Hero lang={lang} />
+  <Positioning lang={lang} />
+  <SelectedWork lang={lang} />
+  <Numbers lang={lang} />
+  <HowIWork lang={lang} />
+  <Contact lang={lang} />
+</Base>

@@ -1,13 +1,24 @@
 ---
-import { howIWork } from '../data/site';
+import type { Locale } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
 import Rule from './Rule.astro';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const items = [
+  { n: '01', title: t('how.1.title'), body: t('how.1.body') },
+  { n: '02', title: t('how.2.title'), body: t('how.2.body') },
+  { n: '03', title: t('how.3.title'), body: t('how.3.body') },
+];
 ---
 
 <section class="shell section-y">
-  <h2 class="label mb-12">How I work</h2>
+  <h2 class="label mb-12">{t('how.title')}</h2>
   <div class="flex flex-col">
     {
-      howIWork.map((item) => (
+      items.map((item) => (
         <article>
           <Rule />
           <div data-reveal class="grid grid-cols-12 gap-x-4 gap-y-4 py-12">

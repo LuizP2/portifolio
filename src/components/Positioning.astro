@@ -1,15 +1,17 @@
 ---
-/** 5.3 — the plain-language centrepiece. Copy is fixed; do not rewrite. */
+import type { Locale } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
 ---
+
 <section class="shell section-y flex min-h-[80svh] items-center justify-center">
   <div data-reveal class="max-w-4xl text-center">
-    <p class="display-md text-text normal-case" style="text-transform: none;">
-      I build the systems your product runs on — and I explain them in plain language.
+    <p class="display-md text-text" style="text-transform: none;">
+      {t('positioning.headline')}
     </p>
-    <p class="prose-body mx-auto mt-10 text-muted">
-      Most of what I do is invisible to your users: the login that keeps their data safe,
-      the payment that never charges twice, the API that answers in 120 milliseconds
-      instead of 350. You notice it only when it&rsquo;s missing.
-    </p>
+    <p class="prose-body mx-auto mt-10 text-muted">{t('positioning.body')}</p>
   </div>
 </section>

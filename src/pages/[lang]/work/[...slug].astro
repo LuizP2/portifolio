@@ -1,0 +1,25 @@
+---
+import WorkPage from '../../../components/WorkPage.astro';
+import { defaultLocale, locales, type Locale } from '../../../i18n/ui';
+import { getWork, slugOf, type WorkEntry } from '../../../i18n/work';
+
+export async function getStaticPaths() {
+  const paths = [];
+
+  for (const locale of locales) {
+    if (locale === defaultLocale) continue;
+    const entries = await getWork(locale);
+    for (const [i, entry] of entries.entries()) {
+      paths.push({
+        params: { lang: locale, slug: slugOf(entry) },
+        props: { lang: locale, entry, next: entries[(i + 1) % entries.length]! },
+      });
+    }
+  }
+
+  return paths;
+}
+
+const { lang, entry, next } = Astro.props as { lang: Locale; entry: WorkEntry; next: WorkEntry };
+---
+<WorkPage lang={lang} entry={entry} next={next} />

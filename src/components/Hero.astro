@@ -1,44 +1,51 @@
 ---
-import { site, specialties } from '../data/site';
+import type { Locale } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+import { specialties } from '../i18n/content';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
 ---
 
-<section class="shell relative flex min-h-[86svh] flex-col justify-between pt-32 pb-14 md:min-h-svh">
+<section
+  class="shell relative flex min-h-[86svh] flex-col justify-between pt-32 pb-14 md:min-h-svh"
+>
   <div data-reveal class="pt-[8vh]">
     <h1 class="display text-text">
-      <span class="block">Backend</span>
-      <span class="block pl-[8vw] md:pl-[14vw]">Developer</span>
+      <span class="block">{t('hero.line1')}</span>
+      <span class="block pl-[8vw] md:pl-[14vw]">{t('hero.line2')}</span>
     </h1>
   </div>
 
   <div class="mt-16 flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
-    <!-- Rotating scroll badge -->
     <div class="relative hidden size-28 shrink-0 place-items-center md:grid" aria-hidden="true">
       <svg viewBox="0 0 100 100" class="badge-spin size-full">
         <defs>
           <path id="badge-arc" d="M 50,50 m -37,0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0" />
         </defs>
-        <text class="fill-muted" style="font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase;">
-          <textPath href="#badge-arc">Scroll down · Scroll down · </textPath>
+        <text
+          class="fill-muted"
+          style="font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase;"
+        >
+          <textPath href="#badge-arc">{t('hero.scroll')}{t('hero.scroll')}</textPath>
         </text>
       </svg>
       <span class="absolute text-signal text-xl leading-none">✳</span>
     </div>
 
-    <!-- Availability -->
     <div data-reveal class="md:text-right">
       <p class="label text-signal flex items-center gap-2 md:justify-end">
         <span class="signal-pulse inline-block size-1.5 rounded-full bg-signal"></span>
-        Available for work ✳
+        {t('hero.available')} ✳
       </p>
-      <p class="mt-2 text-sm text-muted">{site.locationLine}</p>
+      <p class="mt-2 text-sm text-muted">{t('hero.location')}</p>
     </div>
   </div>
-
 </section>
 
-<!-- Specialties, right-aligned, one per line -->
-<section class="shell" aria-label="Specialties">
+<section class="shell" aria-label={t('hero.specialties')}>
   <div data-reveal class="flex flex-col items-start gap-1.5 md:items-end">
-    {specialties.map((s) => <span class="label">{s}</span>)}
+    {specialties[lang].map((s) => <span class="label">{s}</span>)}
   </div>
 </section>
