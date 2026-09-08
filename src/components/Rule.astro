@@ -1,0 +1,6 @@
+---
+/** Divider line. Grows 0 → 100% width on scroll. Motion primitive (b). */
+interface Props { class?: string }
+const { class: className = '' } = Astro.props;
+---
+<div data-rule class={`h-px w-full bg-line ${className}`} role="presentation"></div>

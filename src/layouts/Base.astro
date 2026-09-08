@@ -1,0 +1,111 @@
+---
+import '../styles/global.css';
+import { site, profiles } from '../data/site';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Page-level canonical path, e.g. "/work/speake/" */
+  path?: string;
+}
+
+const { title, description = site.description, path = '/' } = Astro.props;
+const canonical = new URL(path, Astro.site ?? site.url).href;
+const ogImage = new URL('/og.png', Astro.site ?? site.url).href;
+---
+
+<!doctype html>
+<html lang="en" class="bg-ink">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#111111" />
+    <meta name="color-scheme" content="dark" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.fullName} — ${site.role}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <link
+      rel="preload"
+      href="/fonts/space-grotesk-var-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/inter-var-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <!-- Marks that JS is alive, so motion initial-states only apply when they can be undone. -->
+    <script is:inline>
+      // Motion initial-states apply only while JS is alive to undo them.
+      document.documentElement.classList.add('js');
+      // Safety net: if GSAP never boots, reveal everything rather than hide it.
+      setTimeout(function () {
+        if (document.documentElement.dataset.motion !== 'ready') {
+          document.documentElement.classList.remove('js');
+        }
+      }, 2000);
+    </script>
+
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: site.fullName,
+        alternateName: site.name,
+        jobTitle: site.role,
+        email: `mailto:${site.email}`,
+        url: site.url,
+        address: { '@type': 'PostalAddress', addressLocality: 'Rio de Janeiro', addressCountry: 'BR' },
+        sameAs: profiles.filter((p) => p.url).map((p) => p.url),
+      })}
+    />
+  </head>
+
+  <body>
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-signal focus:px-4 focus:py-2 focus:text-ink focus:label"
+    >
+      Skip to content
+    </a>
+
+    <Nav />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      import '../scripts/motion';
+    </script>
+  </body>
+</html>

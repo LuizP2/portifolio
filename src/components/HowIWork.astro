@@ -1,0 +1,23 @@
+---
+import { howIWork } from '../data/site';
+import Rule from './Rule.astro';
+---
+
+<section class="shell section-y">
+  <h2 class="label mb-12">How I work</h2>
+  <div class="flex flex-col">
+    {
+      howIWork.map((item) => (
+        <article>
+          <Rule />
+          <div data-reveal class="grid grid-cols-12 gap-x-4 gap-y-4 py-12">
+            <span class="label col-span-12 md:col-span-2">{item.n}</span>
+            <h3 class="display-sm col-span-12 text-text md:col-span-4">{item.title}</h3>
+            <p class="prose-body col-span-12 text-muted md:col-span-6">{item.body}</p>
+          </div>
+        </article>
+      ))
+    }
+    <Rule />
+  </div>
+</section>

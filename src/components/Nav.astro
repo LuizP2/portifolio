@@ -1,0 +1,15 @@
+---
+import { site } from '../data/site';
+---
+
+<header id="site-nav" class="site-nav shell flex items-center justify-between py-5">
+  <a href="/" class="display-sm text-text transition-colors duration-300 hover:text-signal">
+    {site.name}
+  </a>
+  <a
+    href={`mailto:${site.email}`}
+    class="label text-text transition-colors duration-300 hover:text-signal"
+  >
+    Contact&nbsp;→
+  </a>
+</header>

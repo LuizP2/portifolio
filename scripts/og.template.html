@@ -1,0 +1,60 @@
+<!doctype html>
+<!--
+  Source for public/og.png (1200×630).
+  Regenerate: npm run build && npm run preview, open /__og.html at exactly
+  1200×630 in a browser and screenshot the viewport into public/og.png.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @font-face {
+        font-family: 'Space Grotesk';
+        src: url('/fonts/space-grotesk-var-latin.woff2') format('woff2');
+        font-weight: 300 700;
+      }
+      @font-face {
+        font-family: 'JetBrains Mono';
+        src: url('/fonts/jetbrains-mono-var-latin.woff2') format('woff2');
+        font-weight: 100 800;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1200px; height: 630px; overflow: hidden; }
+      body {
+        background: #111111;
+        color: #ffffff;
+        padding: 72px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      h1 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 700;
+        font-size: 124px;
+        line-height: 0.95;
+        letter-spacing: -0.03em;
+        text-transform: uppercase;
+      }
+      h1 span { display: block; }
+      h1 span + span { padding-left: 96px; }
+      hr { border: 0; border-top: 1px solid #2a2a2a; margin: 56px 0 40px; }
+      p {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 500;
+        font-size: 21px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #8a8a8a;
+      }
+      p.signal { color: #c8ff3d; margin-top: 20px; display: flex; align-items: center; gap: 14px; }
+      p.signal::before { content: ''; width: 12px; height: 12px; border-radius: 50%; background: #c8ff3d; }
+    </style>
+  </head>
+  <body>
+    <h1><span>Backend</span><span>Developer</span></h1>
+    <hr />
+    <p>Luiz Medeiros · Rio de Janeiro · Remote worldwide</p>
+    <p class="signal">Available for work</p>
+  </body>
+</html>

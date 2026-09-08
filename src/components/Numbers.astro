@@ -1,0 +1,22 @@
+---
+import { numbers } from '../data/site';
+import Rule from './Rule.astro';
+---
+
+<section class="shell section-y">
+  <h2 class="label mb-12">The numbers</h2>
+  <Rule class="mb-12" />
+  <dl data-reveal class="grid grid-cols-2 gap-x-8 gap-y-14 lg:grid-cols-4">
+    {
+      numbers.map((n) => (
+        <div>
+          <dt class="sr-only">{n.label}</dt>
+          <dd>
+            <span class="metric block">{n.value}</span>
+            <span class="label mt-4 block">{n.label}</span>
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+</section>

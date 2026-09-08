@@ -1,0 +1,262 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   Fonts — self-hosted, no third-party request.
+   ───────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: "Space Grotesk";
+  src: url("/fonts/space-grotesk-var-latin.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter-var-latin.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/jetbrains-mono-var-latin.woff2") format("woff2");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
+    U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Design tokens
+   ───────────────────────────────────────────────────────────── */
+@theme {
+  /* Colour — monochrome */
+  --color-ink: #111111;
+  --color-surface: #1a1a1a;
+  --color-line: #2a2a2a;
+  --color-text: #ffffff;
+  --color-muted: #8a8a8a; /* 5.4:1 on --color-ink — WCAG AA */
+
+  /* The site's only accent. Metric numbers and the availability status. */
+  --color-signal: #c8ff3d;
+
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Rhythm */
+  --spacing-gutter: clamp(1.5rem, 5vw, 6rem);
+  --spacing-section: clamp(6rem, 15vh, 12rem);
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Base
+   ───────────────────────────────────────────────────────────── */
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--color-ink);
+    color: var(--color-text);
+    font-family: var(--font-body);
+    font-size: 1.125rem; /* 18px */
+    font-weight: 400;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-signal);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Typographic roles
+   ───────────────────────────────────────────────────────────── */
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(2.5rem, 9vw, 8rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+}
+
+@utility display-md {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(1.75rem, 4.5vw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+@utility display-sm {
+  font-family: var(--font-display);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+/* Labels, tags, metadata, numbering. Never a paragraph. */
+@utility label {
+  font-family: var(--font-mono);
+  font-weight: 500;
+  font-size: 0.75rem; /* 12px */
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  line-height: 1.4;
+  color: var(--color-muted);
+}
+
+@utility prose-body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  max-width: 62ch;
+}
+
+@utility metric {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 7vw, 5.5rem);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--color-signal);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Layout
+   ───────────────────────────────────────────────────────────── */
+@utility shell {
+  padding-inline: var(--spacing-gutter);
+  width: 100%;
+}
+
+@utility section-y {
+  padding-block: var(--spacing-section);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Motion — only two primitives.
+   Initial states are applied only when JS is running, so the page
+   stays fully readable with JavaScript disabled.
+   ───────────────────────────────────────────────────────────── */
+.js [data-reveal] > * {
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.js [data-rule] {
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .js [data-reveal] > * {
+    transform: none;
+  }
+  .js [data-rule] {
+    transform: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Fixed nav.
+   Over the hero it sits bare and inverts against the artwork. Once the page
+   scrolls it takes a backdrop, so right-aligned content passing underneath
+   never collides with "Contact →".
+   ───────────────────────────────────────────────────────────── */
+.site-nav {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 40;
+  mix-blend-mode: difference;
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color 0.3s ease,
+    backdrop-filter 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.site-nav[data-scrolled] {
+  mix-blend-mode: normal;
+  background-color: color-mix(in srgb, var(--color-ink) 82%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom-color: var(--color-line);
+}
+
+/* Rotating badge — charm only, disabled under reduced motion. */
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.badge-spin {
+  animation: spin-slow 14s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .badge-spin {
+    animation: none !important;
+  }
+}
+
+/* Availability dot */
+@keyframes signal-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.signal-pulse {
+  animation: signal-pulse 2.4s ease-in-out infinite;
+}

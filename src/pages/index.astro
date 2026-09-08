@@ -1,0 +1,19 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import Positioning from '../components/Positioning.astro';
+import SelectedWork from '../components/SelectedWork.astro';
+import Numbers from '../components/Numbers.astro';
+import HowIWork from '../components/HowIWork.astro';
+import Contact from '../components/Contact.astro';
+import { site } from '../data/site';
+---
+
+<Base title={`${site.fullName} — ${site.role}`} path="/">
+  <Hero />
+  <Positioning />
+  <SelectedWork />
+  <Numbers />
+  <HowIWork />
+  <Contact />
+</Base>

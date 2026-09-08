@@ -1,0 +1,42 @@
+---
+import { site, profiles } from '../data/site';
+---
+
+<section id="contact" class="shell section-y">
+  <div data-reveal>
+    <h2 class="display text-text">Get in touch</h2>
+
+    <a
+      href={`mailto:${site.email}`}
+      class="display-sm mt-12 inline-block text-text underline decoration-line decoration-1 underline-offset-8 transition-colors duration-300 hover:text-signal hover:decoration-signal"
+      style="text-transform: none;"
+    >
+      {site.email}
+    </a>
+
+    <ul class="mt-10 flex flex-wrap gap-x-8 gap-y-3">
+      {
+        profiles.map((p) =>
+          p.url ? (
+            <li>
+              <a
+                href={p.url}
+                rel="me noopener"
+                target="_blank"
+                class="label text-text transition-colors duration-300 hover:text-signal"
+              >
+                {p.label} ↗
+              </a>
+            </li>
+          ) : (
+            <li>
+              <span class="label" title="Link pending">
+                {p.label}
+              </span>
+            </li>
+          )
+        )
+      }
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,76 @@
+---
+import { getCollection } from 'astro:content';
+import Rule from './Rule.astro';
+
+const entries = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
+
+/**
+ * The demo projects of Section 7 are Phase 2 — not built yet.
+ * The row stays in the index (it is in the spec) but is explicitly marked
+ * as in progress and links nowhere, so nothing is claimed that is not real.
+ */
+const upcoming = {
+  year: '2026',
+  title: '[Demo projects]',
+  summary: 'Things you can click and test',
+  category: 'Live demos',
+};
+
+const total = String(entries.length + 1).padStart(2, '0');
+---
+
+<section id="work" class="shell section-y">
+  <div class="mb-14 flex items-baseline justify-between">
+    <h2 class="label">Selected work</h2>
+    <span class="label">01 / {total}</span>
+  </div>
+
+  <ul class="flex flex-col">
+    {
+      entries.map((entry, i) => (
+        <li>
+          <Rule />
+          <a
+            href={`/work/${entry.id}/`}
+            class="group grid grid-cols-12 items-baseline gap-x-4 gap-y-2 py-7 transition-colors duration-300 lg:py-9"
+          >
+            <span class="label col-span-2 lg:col-span-1">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <span class="label col-span-2 lg:col-span-1">{entry.data.year}</span>
+            <span class="display-sm col-span-8 text-text transition-colors duration-300 group-hover:text-signal lg:col-span-4">
+              {entry.data.title}
+            </span>
+            <span class="col-span-12 text-base text-muted lg:col-span-4 lg:text-[1.0625rem]">
+              {entry.data.summary}
+            </span>
+            <span class="label col-span-12 lg:col-span-2 lg:text-right">
+              {entry.data.category}
+            </span>
+
+            <span class="col-span-12 max-h-0 overflow-hidden opacity-0 transition-all duration-500 ease-out-expo group-hover:max-h-40 group-hover:opacity-100 group-focus:max-h-40 group-focus:opacity-100 lg:col-start-3 lg:col-span-10">
+              <span class="prose-body block pt-4 text-muted">{entry.data.teaser}</span>
+              <span class="label mt-3 block text-signal">View project →</span>
+            </span>
+          </a>
+        </li>
+      ))
+    }
+
+    <li>
+      <Rule />
+      <div class="grid grid-cols-12 items-baseline gap-x-4 gap-y-2 py-7 lg:py-9">
+        <span class="label col-span-2 lg:col-span-1">
+          {String(entries.length + 1).padStart(2, '0')}
+        </span>
+        <span class="label col-span-2 lg:col-span-1">{upcoming.year}</span>
+        <span class="display-sm col-span-8 text-muted lg:col-span-4">{upcoming.title}</span>
+        <span class="col-span-12 text-base text-muted lg:col-span-4 lg:text-[1.0625rem]">
+          {upcoming.summary}
+        </span>
+        <span class="label col-span-12 lg:col-span-2 lg:text-right">In progress</span>
+      </div>
+    </li>
+  </ul>
+  <Rule />
+</section>
