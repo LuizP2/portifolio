@@ -80,15 +80,27 @@ npm run preview
 
 ## Deploy — Cloudflare Pages
 
-Connect the repo and use:
+The project is connected to this GitHub repo, so a push to `main` builds and
+deploys on its own, and every pull request gets a preview URL.
 
-- Build command: `npm run build`
-- Output directory: `dist`
-- Node version: 20 or newer
+Build settings:
 
-`public/_headers` already sets security headers and immutable caching for fonts
-and hashed assets; Cloudflare Pages and Netlify both read it. Vercel detects
-Astro on its own — the same build command and output directory apply.
+| Setting | Value |
+|---|---|
+| Framework preset | Astro |
+| Build command | `npm run build` |
+| Build output directory | `dist` |
+| Root directory | *(empty)* |
+
+`.node-version` pins Node 22 for the build. `public/_headers` sets the security
+headers and immutable caching for fonts and hashed assets — Cloudflare Pages
+and Netlify both read it. Vercel detects Astro on its own; the same build
+command and output directory apply.
+
+There is deliberately no `wrangler.toml`: on a Git-connected Pages project its
+`name` must match the project name in the dashboard, and a mismatch fails the
+build. Add one only if you switch to direct uploads
+(`npx wrangler pages deploy dist`).
 
 ## Constraints this site is held to
 
