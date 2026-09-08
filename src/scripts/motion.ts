@@ -1,5 +1,6 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { initSnake } from './snake';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -69,6 +70,7 @@ function initNav() {
 }
 
 initNav();
+initSnake();
 
 // Fonts and images settle after first paint — recompute trigger positions once.
 window.addEventListener('load', () => ScrollTrigger.refresh(), { once: true });

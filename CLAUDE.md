@@ -47,6 +47,11 @@ numbers and the availability status. Never add a second accent. The hero
 portrait is monochrome for the same reason: colour in the photograph would be a
 second accent by the back door.
 
+**The contribution graph shows real data** from
+`src/data/contributions.json`, refreshed by `scripts/fetch-contributions.mjs`.
+It says "a year of commits", so it has to be a year of commits — a grid invented
+to look like activity is exactly the kind of claim this site does not make.
+
 **The hero follows `reference/Hero.png`**, which departs from section 5.2 of the
 brief: sentence-case headline at a lighter weight (`display-hero`) instead of
 the giant uppercase `display`, a portrait on the right, specialty chips instead

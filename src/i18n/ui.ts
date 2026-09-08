@@ -67,6 +67,10 @@ export const ui = {
     'work.soonStatus': 'In progress',
 
     'numbers.title': 'The numbers',
+    'commits.title': 'A year of commits',
+    'commits.snake': 'The snake eats the squares',
+    'commits.days': 'days with activity',
+    'commits.alt': 'GitHub contribution calendar for the last year',
 
     'how.title': 'How I work',
     'how.1.title': 'I ask first, code second',
@@ -129,6 +133,10 @@ export const ui = {
     'work.soonStatus': 'Em andamento',
 
     'numbers.title': 'Os números',
+    'commits.title': 'Um ano de commits',
+    'commits.snake': 'A cobrinha come os quadrados',
+    'commits.days': 'dias com atividade',
+    'commits.alt': 'Calendário de contribuições do GitHub no último ano',
 
     'how.title': 'Como eu trabalho',
     'how.1.title': 'Pergunto primeiro, programo depois',
@@ -191,6 +199,10 @@ export const ui = {
     'work.soonStatus': 'En curso',
 
     'numbers.title': 'Los números',
+    'commits.title': 'Un año de commits',
+    'commits.snake': 'La serpiente se come los cuadrados',
+    'commits.days': 'días con actividad',
+    'commits.alt': 'Calendario de contribuciones de GitHub del último año',
 
     'how.title': 'Cómo trabajo',
     'how.1.title': 'Pregunto primero, programo después',

@@ -2,6 +2,7 @@
 import type { Locale } from '../i18n/ui';
 import { useTranslations } from '../i18n/utils';
 import { numbers } from '../i18n/content';
+import CommitGlyph from './CommitGlyph.astro';
 import Rule from './Rule.astro';
 
 interface Props { lang: Locale }
@@ -14,10 +15,11 @@ const t = useTranslations(lang);
   <Rule class="mb-12" />
   <dl data-reveal class="grid grid-cols-2 gap-x-8 gap-y-14 lg:grid-cols-4">
     {
-      numbers[lang].map((n) => (
+      numbers[lang].map((n, i) => (
         <div>
           <dt class="sr-only">{n.label}</dt>
           <dd>
+            <CommitGlyph seed={i * 5 + 2} cols={8} rows={4} cell="7px" class="mb-6" />
             <span class="metric block">{n.value}</span>
             <span class="label mt-4 block">{n.label}</span>
           </dd>

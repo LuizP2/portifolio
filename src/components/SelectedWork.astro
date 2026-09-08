@@ -2,6 +2,7 @@
 import type { Locale } from '../i18n/ui';
 import { localePath, useTranslations } from '../i18n/utils';
 import { getWork, slugOf } from '../i18n/work';
+import CommitGlyph from './CommitGlyph.astro';
 import Rule from './Rule.astro';
 
 interface Props { lang: Locale }
@@ -33,7 +34,10 @@ const total = String(entries.length + 1).padStart(2, '0');
             href={localePath(lang, `/work/${slugOf(entry)}/`)}
             class="group grid grid-cols-12 items-baseline gap-x-4 gap-y-2 py-7 transition-colors duration-300 lg:py-9"
           >
-            <span class="label col-span-2 lg:col-span-1">{String(i + 1).padStart(2, '0')}</span>
+            <span class="col-span-2 lg:col-span-1">
+              <span class="label block">{String(i + 1).padStart(2, '0')}</span>
+              <CommitGlyph seed={i + 1} cell="5px" class="mt-2.5" />
+            </span>
             <span class="label col-span-2 lg:col-span-1">{entry.data.year}</span>
             <span class="display-sm col-span-8 text-text transition-colors duration-300 group-hover:text-signal lg:col-span-4">
               {entry.data.title}
@@ -55,7 +59,10 @@ const total = String(entries.length + 1).padStart(2, '0');
     <li>
       <Rule />
       <div class="grid grid-cols-12 items-baseline gap-x-4 gap-y-2 py-7 lg:py-9">
-        <span class="label col-span-2 lg:col-span-1">{total}</span>
+        <span class="col-span-2 lg:col-span-1">
+          <span class="label block">{total}</span>
+          <CommitGlyph seed={entries.length + 1} cell="5px" class="mt-2.5" />
+        </span>
         <span class="label col-span-2 lg:col-span-1">2026</span>
         <span class="display-sm col-span-8 text-muted lg:col-span-4">{t('work.soonTitle')}</span>
         <span class="col-span-12 text-base text-muted lg:col-span-4 lg:text-[1.0625rem]">

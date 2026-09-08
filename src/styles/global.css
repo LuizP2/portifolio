@@ -48,6 +48,17 @@
   /* The site's only accent. Metric numbers and the availability status. */
   --color-signal: #c8ff3d;
 
+  /*
+   * Contribution levels. Derived from --color-signal rather than borrowed from
+   * GitHub's own green: the grid is what reads as a contribution graph, and a
+   * second green next to the accent would read as a mistake.
+   */
+  --color-commit-0: #1b1b1b;
+  --color-commit-1: color-mix(in srgb, var(--color-signal) 20%, var(--color-ink));
+  --color-commit-2: color-mix(in srgb, var(--color-signal) 42%, var(--color-ink));
+  --color-commit-3: color-mix(in srgb, var(--color-signal) 68%, var(--color-ink));
+  --color-commit-4: var(--color-signal);
+
   --font-display: "Space Grotesk", system-ui, sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
@@ -216,6 +227,84 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Contribution graph.
+   Real data from src/data/contributions.json, drawn as a grid of cells.
+   ───────────────────────────────────────────────────────────── */
+.commit-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(7, var(--cell, 12px));
+  grid-auto-columns: var(--cell, 12px);
+  gap: var(--cell-gap, 3px);
+}
+
+.commit-cell {
+  border-radius: 2px;
+  background-color: var(--color-commit-0);
+  transition:
+    background-color 260ms ease,
+    transform 260ms ease;
+}
+
+.commit-cell[data-level='1'] { background-color: var(--color-commit-1); }
+.commit-cell[data-level='2'] { background-color: var(--color-commit-2); }
+.commit-cell[data-level='3'] { background-color: var(--color-commit-3); }
+.commit-cell[data-level='4'] { background-color: var(--color-commit-4); }
+
+/* Cells the snake has swallowed drop back to empty. */
+.commit-cell[data-eaten] {
+  background-color: var(--color-commit-0);
+}
+
+/* The snake itself is drawn by lighting up the cells it occupies. */
+.commit-cell[data-snake] {
+  background-color: var(--color-text);
+  transition: background-color 90ms linear;
+}
+
+.commit-cell[data-snake='head'] {
+  background-color: var(--color-text);
+  transform: scale(1.12);
+  transition:
+    background-color 90ms linear,
+    transform 90ms ease;
+}
+
+.commit-cell[data-snake='2'] { background-color: color-mix(in srgb, var(--color-text) 72%, var(--color-ink)); }
+.commit-cell[data-snake='3'] { background-color: color-mix(in srgb, var(--color-text) 52%, var(--color-ink)); }
+.commit-cell[data-snake='4'] { background-color: color-mix(in srgb, var(--color-text) 34%, var(--color-ink)); }
+.commit-cell[data-snake='5'] { background-color: color-mix(in srgb, var(--color-text) 20%, var(--color-ink)); }
+
+/* The band scrolls rather than shrinking the cells past legibility. */
+.commit-band {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 2%, #000 98%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0, #000 2%, #000 98%, transparent 100%);
+}
+.commit-band::-webkit-scrollbar {
+  display: none;
+}
+
+/* A small block of the same calendar, used as a marker beside a row. */
+.commit-glyph {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 2px;
+  width: max-content;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .commit-cell {
+    transition: none;
+  }
+  .commit-cell[data-snake] {
+    transform: none;
   }
 }
 

@@ -1,0 +1,32 @@
+---
+import contributions from '../data/contributions.json';
+
+/**
+ * A small block cut from the real contribution calendar, used as a marker.
+ * Deterministic by `seed`, so a given row always shows the same weeks — it is
+ * a slice of the data, never a decoration invented to look like one.
+ */
+interface Props {
+  seed: number;
+  cols?: number;
+  rows?: number;
+  cell?: string;
+  class?: string;
+}
+
+const { seed, cols = 3, rows = 3, cell = '4px', class: className = '' } = Astro.props;
+const weeks = contributions.weeks as number[][];
+
+const slice = Array.from({ length: cols }, (_, c) => {
+  const week = weeks[(seed * 7 + c * 3) % weeks.length]!;
+  return Array.from({ length: rows }, (_, r) => week[(r + seed) % week.length] ?? 0);
+});
+---
+
+<div
+  class:list={['commit-glyph', className]}
+  style={`grid-template-rows: repeat(${rows}, ${cell}); grid-auto-columns: ${cell};`}
+  aria-hidden="true"
+>
+  {slice.map((col) => col.map((level) => <span class="commit-cell" data-level={level} />))}
+</div>

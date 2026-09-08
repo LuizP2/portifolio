@@ -29,14 +29,14 @@ const t = useTranslations(lang);
                 href={p.url}
                 rel="me noopener"
                 target="_blank"
-                class="label text-text transition-colors duration-300 hover:text-signal"
+                class="chip inline-block text-text transition-colors duration-300 hover:border-signal hover:text-signal"
               >
                 {p.label} ↗
               </a>
             </li>
           ) : (
             <li>
-              <span class="label">{p.label}</span>
+              <span class="chip inline-block">{p.label}</span>
             </li>
           )
         )

@@ -1,0 +1,52 @@
+---
+import contributions from '../data/contributions.json';
+import type { Locale } from '../i18n/ui';
+import { useTranslations } from '../i18n/utils';
+import Rule from './Rule.astro';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const weeks = contributions.weeks as number[][];
+const rows = 7;
+---
+
+<section class="shell section-y" aria-labelledby="commits-title">
+  <div class="mb-8 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2">
+    <h2 id="commits-title" class="label">{t('commits.title')}</h2>
+    <p class="label">{t('commits.snake')}</p>
+  </div>
+
+  <Rule class="mb-8" />
+
+  <div class="commit-band -mx-[var(--spacing-gutter)] px-[var(--spacing-gutter)] py-1">
+    <div
+      class="commit-grid w-max"
+      style="
+        --cell-gap: clamp(2px, 0.28vw, 4px);
+        --cell: max(
+          7px,
+          calc((100vw - 2 * var(--spacing-gutter) - 52 * var(--cell-gap)) / 53)
+        );
+      "
+      data-commit-grid
+      data-rows={rows}
+      data-cols={weeks.length}
+      role="img"
+      aria-label={t('commits.alt')}
+    >
+      {
+        weeks.map((week) =>
+          Array.from({ length: rows }, (_, r) => (
+            <span class="commit-cell" data-level={week[r] ?? 0} />
+          ))
+        )
+      }
+    </div>
+  </div>
+
+  <p class="label mt-6">
+    {contributions.from} — {contributions.to} · {contributions.activeDays} {t('commits.days')}
+  </p>
+</section>

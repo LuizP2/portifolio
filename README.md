@@ -109,6 +109,33 @@ the number of tags has to match across locales.
 Metrics in the "The Numbers" band live in `src/i18n/content.ts` and each carries
 a `source` pointing at the case study it came from. Keep it that way.
 
+## The contribution graph
+
+The band between the positioning statement and the work index is the real
+GitHub contribution calendar, not a decoration shaped like one:
+
+```bash
+node scripts/fetch-contributions.mjs   # → src/data/contributions.json
+```
+
+The JSON is committed so a build never depends on GitHub being up. Re-run the
+script to refresh it; `GITHUB_LOGIN` overrides the account.
+
+The same data supplies the small markers beside each work row, above each
+metric, and the faded band above the footer — every square on the site is a day
+that actually happened.
+
+**The snake** (`src/scripts/snake.ts`) walks the calendar column by column and
+clears what it swallows, restarting when it reaches the end. It is drawn by
+lighting up the cells it occupies rather than by moving a separate element, so
+there is nothing to keep in sync on resize. It pauses when scrolled out of
+view, does nothing at all under `prefers-reduced-motion`, and without
+JavaScript the graph is simply a graph.
+
+**Colour.** The levels are mixed from `--color-signal`, not borrowed from
+GitHub's green: the grid is what reads as a contribution graph, and a second
+green beside the accent would read as a mistake.
+
 ## The hero portrait
 
 `src/assets/portrait-source.jpg` is the untouched photograph. The monochrome,
