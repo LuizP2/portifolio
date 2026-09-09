@@ -13,12 +13,13 @@ const t = useTranslations(lang);
 <!--
   Two real grid columns from lg up, rather than copy floated over an absolute
   image: the portrait can never creep under the headline, at any width. Below
-  lg the columns collapse and the portrait simply follows the copy.
+  lg the columns collapse into a single flow, reordered so the portrait leads
+  (full-bleed, under the fixed nav's scrim) and the copy follows.
 -->
 <section
-  class="relative overflow-hidden lg:grid lg:min-h-svh lg:grid-cols-[1fr_minmax(0,52%)] lg:items-stretch"
+  class="relative flex flex-col overflow-hidden lg:grid lg:min-h-svh lg:grid-cols-[1fr_minmax(0,52%)] lg:items-stretch"
 >
-  <div class="shell flex items-center pt-32 pb-4 lg:py-32">
+  <div class="order-2 shell flex items-center pt-10 pb-4 lg:order-none lg:py-32">
     <div data-reveal class="w-full max-w-[42rem]">
       <p class="label flex items-center gap-2 text-signal">
         <span class="signal-pulse inline-block size-2 rounded-[2px] bg-signal"></span>
@@ -40,7 +41,7 @@ const t = useTranslations(lang);
     </div>
   </div>
 
-  <div class="portrait relative mt-12 h-[52svh] w-full select-none lg:mt-0 lg:h-auto">
+  <div class="portrait relative order-1 h-[52svh] w-full select-none lg:order-none lg:mt-0 lg:h-auto">
     <Image
       src={portrait}
       alt={t('hero.portraitAlt')}
