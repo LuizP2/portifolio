@@ -274,10 +274,14 @@
     transform 90ms ease;
 }
 
-.commit-cell[data-snake='2'] { background-color: color-mix(in srgb, var(--color-text) 72%, var(--color-ink)); }
-.commit-cell[data-snake='3'] { background-color: color-mix(in srgb, var(--color-text) 52%, var(--color-ink)); }
-.commit-cell[data-snake='4'] { background-color: color-mix(in srgb, var(--color-text) 34%, var(--color-ink)); }
-.commit-cell[data-snake='5'] { background-color: color-mix(in srgb, var(--color-text) 20%, var(--color-ink)); }
+/* Body segments fade toward the tail; --seg is set per cell as it moves. */
+.commit-cell[data-snake='body'] {
+  background-color: color-mix(
+    in srgb,
+    var(--color-text) calc(var(--seg, 0.5) * 100%),
+    var(--color-ink)
+  );
+}
 
 /* The band scrolls rather than shrinking the cells past legibility. */
 .commit-band {
