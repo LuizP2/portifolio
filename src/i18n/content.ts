@@ -38,7 +38,7 @@ export type Metric = { value: string; label: string; source: string };
 export const numbers: Record<Locale, Metric[]> = {
   en: [
     { value: '500+', label: 'users served', source: 'speake' },
-    { value: '~5,000', label: 'requests/day handled', source: 'speake' },
+    { value: '~5k', label: 'requests/day handled', source: 'speake' },
     { value: '65%', label: 'faster API responses', source: 'speake' },
     { value: '20', label: 'developers taught', source: 'usina-social' },
   ],
@@ -50,7 +50,7 @@ export const numbers: Record<Locale, Metric[]> = {
   ],
   es: [
     { value: '500+', label: 'usuarios atendidos', source: 'speake' },
-    { value: '~5.000', label: 'solicitudes por día', source: 'speake' },
+    { value: '~5k', label: 'solicitudes por día', source: 'speake' },
     { value: '65%', label: 'respuestas más rápidas', source: 'speake' },
     { value: '20', label: 'desarrolladores formados', source: 'usina-social' },
   ],

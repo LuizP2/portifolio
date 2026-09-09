@@ -10,7 +10,7 @@ problem: "A platform for audio stations needed a backend that did not exist yet.
 built: "The full server side. The part users never see: how they sign in safely, how their subscription gets charged correctly every month, how the app stays fast when hundreds of people use it at once."
 results:
   - "500+ users"
-  - "~5,000 requests/day"
+  - "~5k requests/day"
   - "API responses 65% faster (350ms → 120ms)"
   - "Near-zero downtime on deploys"
 stack:
