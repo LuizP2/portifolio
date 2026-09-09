@@ -1,26 +1,39 @@
 ---
+import contributions from '../data/contributions.json';
 import { sourceRepo } from '../data/site';
 import type { Locale } from '../i18n/ui';
 import { useTranslations } from '../i18n/utils';
-import CommitGlyph from './CommitGlyph.astro';
 import Rule from './Rule.astro';
 
 interface Props { lang: Locale }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const year = new Date().getFullYear();
+
+const weeks = contributions.weeks as number[][];
+const rows = 7;
 ---
 
 <footer class="shell pb-10">
   <Rule class="mb-8" />
   <div class="relative isolate overflow-hidden">
-    <div
-      class="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center opacity-20"
-      aria-hidden="true"
-    >
-      <CommitGlyph seed={11} cols={44} rows={3} cell="7px" />
+    <div class="footer-commit-fade-x pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+      <div class="footer-commit-fade-y">
+        <div
+          class="commit-grid"
+          style={`--cell-gap: clamp(1px, 0.2vw, 3px); --cell: max(3px, calc((100vw - 2 * var(--spacing-gutter) - ${weeks.length - 1} * var(--cell-gap)) / ${weeks.length}));`}
+        >
+          {
+            weeks.map((week) =>
+              Array.from({ length: rows }, (_, r) => (
+                <span class="commit-cell" data-level={week[r] ?? 0} />
+              ))
+            )
+          }
+        </div>
+      </div>
     </div>
-    <div class="flex flex-col gap-3 py-4 md:flex-row md:items-center md:justify-between">
+    <div class="flex flex-col gap-3 py-6 md:flex-row md:items-center md:justify-between">
       <p class="label">
         {t('footer.built')}{' '}
         {
