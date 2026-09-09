@@ -44,7 +44,7 @@ export const numbers: Record<Locale, Metric[]> = {
   ],
   pt: [
     { value: '500+', label: 'usuários atendidos', source: 'speake' },
-    { value: '~5.000', label: 'requisições por dia', source: 'speake' },
+    { value: '~5k', label: 'requisições por dia', source: 'speake' },
     { value: '65%', label: 'respostas mais rápidas', source: 'speake' },
     { value: '20', label: 'desenvolvedores formados', source: 'usina-social' },
   ],

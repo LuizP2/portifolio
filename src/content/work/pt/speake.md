@@ -10,7 +10,7 @@ problem: "Uma plataforma para estações de áudio precisava de um backend que a
 built: "Todo o lado do servidor. A parte que o usuário nunca vê: como ele entra na conta com segurança, como a assinatura é cobrada corretamente todo mês, como o aplicativo continua rápido quando centenas de pessoas usam ao mesmo tempo."
 results:
   - "500+ usuários"
-  - "~5.000 requisições por dia"
+  - "~5k requisições por dia"
   - "Respostas da API 65% mais rápidas (350ms → 120ms)"
   - "Praticamente zero indisponibilidade nos deploys"
 stack:
